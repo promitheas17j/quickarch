@@ -22,7 +22,7 @@ reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.
 pacman -Syyu --noconfirm
 
 # Installing packages
-pacman -S zsh mesa sddm xorg-server xorg-apps xorg-xinit xf86-video-amdgpu neovim bspwm sxhkd wpa_supplicant bluez bluez-utils git chezmoi alacritty openssh man-db man-pages polybar rofi alsa-utils pulseaudio vlc --noconfirm --needed
+pacman -S zsh mesa sddm xorg-server xorg-apps xorg-xinit xf86-video-amdgpu neovim bspwm sxhkd wpa_supplicant bluez bluez-utils git chezmoi alacritty openssh man-db man-pages polybar rofi alsa-utils pulseaudio vlc ssh-keygen yay man man-pages polybar rofi alsa-utils pulseaudio vlc lsof qbittorrent copyq thunar thunderbird zip unzip --noconfirm --needed
 
 # Export default editor to be neovim
 export EDITOR=nvim
@@ -41,4 +41,9 @@ cd yay
 makepkg -si --noconfirm
 
 # Installing packages from AUR
-yay -S brave-bin pavucontrol 
+yay -S brave-bin pavucontrol stremio anydesk-bin 
+
+# General 'housecleaning' stuff
+mkdir -p /home/mart/Documents
+mkdir -p /home/mart/Pictures
+mkdir -p /home/mart/Downloads
