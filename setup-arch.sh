@@ -40,6 +40,7 @@ makepkg -si --noconfirm
 
 # Installing packages from AUR
 yay -S brave-bin pavucontrol stremio anydesk-bin sddm-theme-tokyo-night
+
 # General 'housecleaning' stuff
 mkdir -p /home/mart/Documents
 mkdir -p /home/mart/Pictures
@@ -48,6 +49,7 @@ mkdir -p /home/mart/Downloads
 # Create a couple directories for mounting usb's
 mkdir -p /mnt/usb_1/ /mnt/usb_2/
 
+# SDDM configuration
 systemctl enable sddm
 cp sddm/sddm.conf /etc/sddm.conf
 cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
