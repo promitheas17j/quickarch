@@ -6,9 +6,6 @@ systemctl enable NetworkManager
 # Make NetworkManager is running
 systemctl start NetworkManager
 
-# Create a couple directories for mounting usb's
-mkdir -p /mnt/usb_1/ /mnt/usb_2/
-
 # Install reflector with all default options
 pacman -S --noconfirm reflector
 
@@ -22,10 +19,11 @@ reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.
 pacman -Syyu --noconfirm
 
 # Installing packages
-pacman -S zsh mesa sddm xorg-server xorg-apps xorg-xinit xf86-video-amdgpu neovim bspwm sxhkd wpa_supplicant bluez bluez-utils git chezmoi alacritty openssh man-db man-pages polybar rofi alsa-utils pulseaudio vlc ssh-keygen yay man man-pages polybar rofi alsa-utils pulseaudio vlc lsof qbittorrent copyq thunar thunderbird zip unzip --noconfirm --needed
+pacman -S zsh mesa sddm xorg-server xorg-apps xorg-xinit xf86-video-amdgpu neovim bspwm sxhkd wpa_supplicant bluez bluez-utils git chezmoi alacritty openssh man-db man-pages polybar alsa-utils pulseaudio vlc ssh-keygen yay man man-pages rofi lsof qbittorrent copyq thunar thunderbird zip unzip sddm --noconfirm --needed
 
 # Export default editor to be neovim
 export EDITOR=nvim
+
 
 # Create user
 useradd -m -g users -s /bin/zsh mart
@@ -41,9 +39,21 @@ cd yay
 makepkg -si --noconfirm
 
 # Installing packages from AUR
-yay -S brave-bin pavucontrol stremio anydesk-bin 
-
+yay -S brave-bin pavucontrol stremio anydesk-bin sddm-theme-tokyo-night
 # General 'housecleaning' stuff
 mkdir -p /home/mart/Documents
 mkdir -p /home/mart/Pictures
 mkdir -p /home/mart/Downloads
+
+# Create a couple directories for mounting usb's
+mkdir -p /mnt/usb_1/ /mnt/usb_2/
+
+systemctl enable sddm
+cp sddm.conf /etc/sddm.conf
+
+# Synchronise with dotfiles repository using chezmoi
+# WILL LIKELY BREAK AS GITHUB AUTH NOT SET UP YET AT THIS POINT
+# chezmoi init https://github.com/promitheas17j/dotfiles.git
+# cd /home/mart/.local/share/chezmoi
+# git pull
+# chezmoi update -v
