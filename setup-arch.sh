@@ -19,7 +19,7 @@ reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.
 pacman -Syyu --noconfirm
 
 # Installing packages
-pacman -S zsh mesa sddm xorg-server xorg-apps xorg-xinit xf86-video-amdgpu neovim bspwm sxhkd wpa_supplicant bluez bluez-utils git chezmoi alacritty openssh man-db man-pages polybar alsa-utils pulseaudio vlc ssh-keygen yay man man-pages rofi lsof qbittorrent copyq thunar thunderbird zip unzip sddm --noconfirm --needed
+pacman -S zsh mesa sddm xorg-server xorg-apps xorg-xinit xf86-video-amdgpu neovim bspwm sxhkd wpa_supplicant bluez bluez-utils git chezmoi alacritty openssh man-db man-pages polybar alsa-utils pulseaudio vlc ssh-keygen yay man man-pages rofi lsof qbittorrent copyq thunar thunderbird zip unzip sddm qt5-quickcontrols2 qt5-graphicaleffects qt5-svg --noconfirm --needed
 
 # Export default editor to be neovim
 export EDITOR=nvim
@@ -49,7 +49,8 @@ mkdir -p /home/mart/Downloads
 mkdir -p /mnt/usb_1/ /mnt/usb_2/
 
 systemctl enable sddm
-cp sddm.conf /etc/sddm.conf
+cp sddm/sddm.conf /etc/sddm.conf
+cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
 
 # Synchronise with dotfiles repository using chezmoi
 # WILL LIKELY BREAK AS GITHUB AUTH NOT SET UP YET AT THIS POINT
