@@ -39,6 +39,7 @@ PACMAN_PKGS=(
 	'qt5-graphicaleffects'
 	'qt5-svg'
 	'flameshot'
+	'htop'
 )	
 
 AUR_PKGS=(
