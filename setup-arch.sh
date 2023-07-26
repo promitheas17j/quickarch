@@ -40,6 +40,7 @@ PACMAN_PKGS=(
 	'qt5-svg'
 	'flameshot'
 	'htop'
+	'fd'
 )	
 
 AUR_PKGS=(
@@ -48,6 +49,7 @@ AUR_PKGS=(
 	'stremio'
 	'anydesk-bin'
 	'sddm-theme-tokyo-night'
+	'unixbench'
 )
 
 # Enable NetworkManager to start on boot
