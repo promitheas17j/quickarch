@@ -50,6 +50,7 @@ AUR_PKGS=(
 	'anydesk-bin'
 	'sddm-theme-tokyo-night'
 	'unixbench'
+	'beeper'
 )
 
 # Enable NetworkManager to start on boot
