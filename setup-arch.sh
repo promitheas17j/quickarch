@@ -41,6 +41,8 @@ PACMAN_PKGS=(
 	'flameshot'
 	'htop'
 	'fd'
+	'xfce4-power-manager'
+	'discord'
 )	
 
 AUR_PKGS=(
