@@ -53,6 +53,7 @@ AUR_PKGS=(
 	'sddm-theme-tokyo-night'
 	'unixbench'
 	'beeper'
+	'netflix'
 )
 
 # Enable NetworkManager to start on boot
