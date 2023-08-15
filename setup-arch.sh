@@ -119,6 +119,9 @@ systemctl enable sddm
 cp sddm/sddm.conf /etc/sddm.conf
 cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
 
+# Might need this to properly set keymap
+# localectl set-x11-keymap gb
+
 # Synchronise with dotfiles repository using chezmoi
 # WILL LIKELY BREAK AS GITHUB AUTH NOT SET UP YET AT THIS POINT
 # chezmoi init https://github.com/promitheas17j/dotfiles.git
