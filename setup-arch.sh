@@ -44,6 +44,7 @@ PACMAN_PKGS=(
 	'xfce4-power-manager'
 	'discord'
 	'feh'
+	'ripgrep'
 )	
 
 AUR_PKGS=(
