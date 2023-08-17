@@ -45,6 +45,8 @@ PACMAN_PKGS=(
 	'discord'
 	'feh'
 	'ripgrep'
+	'mlocate'
+	'neofetch'
 )	
 
 AUR_PKGS=(
@@ -56,6 +58,7 @@ AUR_PKGS=(
 	'unixbench'
 	'beeper'
 	'netflix'
+	'dracula-cursors-git'
 )
 
 # Enable NetworkManager to start on boot
@@ -119,6 +122,8 @@ mkdir -p /mnt/usb_1/ /mnt/usb_2/
 systemctl enable sddm
 cp sddm/sddm.conf /etc/sddm.conf
 cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
+
+updatedb
 
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
