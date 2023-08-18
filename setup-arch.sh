@@ -1,5 +1,7 @@
 #!/bin/sh
 
+SCRIPT_ORIGINAL_DIR=$(pwd)
+
 PACMAN_PKGS=(
 	'zsh'
 	'mesa'
@@ -103,6 +105,12 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si --noconfirm
 
+# Set grub theme to dracula
+cd ~/Software
+git clone https://github.com/dracula/grub.git grub-dracula
+cp -r grub-dracula/dracula /boot/grub/themes
+
+
 # Installing packages from AUR
 for PKG in "${PACMAN_PKGS[@]}";
 do
@@ -119,6 +127,7 @@ mkdir -p /home/mart/Downloads
 mkdir -p /mnt/usb_1/ /mnt/usb_2/
 
 # SDDM configuration
+cd $SCRIPT_ORIGINAL_DIR
 systemctl enable sddm
 cp sddm/sddm.conf /etc/sddm.conf
 cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
@@ -134,3 +143,9 @@ updatedb
 # cd /home/mart/.local/share/chezmoi
 # git pull
 # chezmoi update -v
+#
+
+echo "If script finished without errors, do the following:"
+echo "\t1) Run: sudo nvim /etc/default/grub"
+echo "\t2) Set: GRUB_THEME to '/boot/grub/themes/dracula.theme.txt'"
+echo "\t3) Run: sudo grub-mkconfig -o /boot/grub/grub.cfg"
