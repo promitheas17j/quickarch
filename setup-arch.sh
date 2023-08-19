@@ -61,6 +61,7 @@ AUR_PKGS=(
 	'beeper'
 	'netflix'
 	'dracula-cursors-git'
+	'lf'
 )
 
 # Enable NetworkManager to start on boot
