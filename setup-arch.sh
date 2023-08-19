@@ -110,6 +110,10 @@ cd ~/Software
 git clone https://github.com/dracula/grub.git grub-dracula
 cp -r grub-dracula/dracula /boot/grub/themes
 
+# Download copyq dracula theme and copy it to themes directory
+copyq_themes_dir="$(copyq info themes)"
+git clone https://github.com/dracula/copyq.git copyq-dracula
+cp copyq-dracula/dracula.ini $copyq_themes_dir
 
 # Installing packages from AUR
 for PKG in "${PACMAN_PKGS[@]}";
@@ -149,3 +153,6 @@ echo "If script finished without errors, do the following:"
 echo "\t1) Run: sudo nvim /etc/default/grub"
 echo "\t2) Set: GRUB_THEME to '/boot/grub/themes/dracula.theme.txt'"
 echo "\t3) Run: sudo grub-mkconfig -o /boot/grub/grub.cfg"
+echo "\t4) Go to copyq -> Preferences -> Appearance and load the dracula theme"
+echo "\t5) Go to thunderbird -> Tools -> Add-ons and Themes and search for dracula then install it"
+echo "\t6) Go to qbittorrent -> Tools -> Preferences -> Behaviour -> Interface -> Use custom UI Theme and select the dracula.qbtheme file"
