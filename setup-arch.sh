@@ -49,6 +49,7 @@ PACMAN_PKGS=(
 	'ripgrep'
 	'mlocate'
 	'neofetch'
+	'pacman-contrib'
 )	
 
 AUR_PKGS=(
