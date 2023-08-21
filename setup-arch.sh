@@ -140,6 +140,10 @@ cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
 
 updatedb
 
+# Create pacman hook to clean cache after update, install, and remove operations
+mkdir -p /etc/pacman.d/hooks
+cp clean_package_cache.hook /etc/pacman.d/hooks/
+
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
 
