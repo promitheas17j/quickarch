@@ -50,6 +50,10 @@ PACMAN_PKGS=(
 	'mlocate'
 	'neofetch'
 	'pacman-contrib'
+	'xdotool'
+	'lxappearance'
+	'qemu-full'
+	'qemu-emulators-full'
 )	
 
 AUR_PKGS=(
@@ -63,6 +67,8 @@ AUR_PKGS=(
 	'netflix'
 	'dracula-cursors-git'
 	'lf'
+	'nerd-fonts-meta'
+	'spotify'
 )
 
 # Enable NetworkManager to start on boot
