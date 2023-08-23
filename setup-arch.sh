@@ -52,8 +52,7 @@ PACMAN_PKGS=(
 	'pacman-contrib'
 	'xdotool'
 	'lxappearance'
-	'qemu-full'
-	'qemu-emulators-full'
+	'xclip'
 )	
 
 AUR_PKGS=(
@@ -71,6 +70,17 @@ AUR_PKGS=(
 	'spotify'
 )
 
+OPTIONAL_PACMAN_PACKAGES=(
+	'qemu-full'
+	'qemu-emulators-full'
+)
+
+${choice_optional_pkgs}='-'
+
+while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N'  ]];
+do
+	read "choice_optional_pkgs?Would you like to install optional packages? [yY/nN]"
+done
 # Enable NetworkManager to start on boot
 systemctl enable NetworkManager
 
@@ -99,6 +109,16 @@ do
 	pacman -S "$PKG" --noconfirm --needed
 done
 
+# Only install the optional packages if user wants to
+if [[ "${choice_optional_pkgs}" = 'y' || "${choice_optional_pkgs}" = 'Y']]
+then
+	for PKG in "${OPTIONAL_PACMAN_PACKAGES[@]}";
+	do
+		echo "Installing optional package: ${PKG}"
+		pacman -S "${PKG}" --noconfirm --needed
+	done
+fi
+
 # Create user
 useradd -m -g users -s /bin/zsh mart
 usermod -aG wheel root
@@ -124,7 +144,7 @@ git clone https://github.com/dracula/copyq.git copyq-dracula
 cp copyq-dracula/dracula.ini $copyq_themes_dir
 
 # Installing packages from AUR
-for PKG in "${PACMAN_PKGS[@]}";
+for PKG in "${AUR_PKGS[@]}";
 do
 	echo "[AUR] Installing: ${PKG}"
 	yay -S "$PKG" --noconfirm --needed
