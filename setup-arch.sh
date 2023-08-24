@@ -53,6 +53,7 @@ PACMAN_PKGS=(
 	'xdotool'
 	'lxappearance'
 	'xclip'
+	'homebank'
 )	
 
 AUR_PKGS=(
