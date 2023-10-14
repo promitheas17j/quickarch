@@ -54,6 +54,7 @@ PACMAN_PKGS=(
 	'lxappearance'
 	'xclip'
 	'homebank'
+	'dunst'
 )	
 
 AUR_PKGS=(
@@ -143,6 +144,12 @@ cp -r grub-dracula/dracula /boot/grub/themes
 copyq_themes_dir="$(copyq info themes)"
 git clone https://github.com/dracula/copyq.git copyq-dracula
 cp copyq-dracula/dracula.ini $copyq_themes_dir
+
+# Set dunst theme to dracula
+cd ~/Software
+git clone https://github.com/dracula/dunst.git dunst-dracula
+mkdir -p ~/.config/dunst
+cp dunst-dracula/dunstrc ~/.config/dunst/
 
 # Installing packages from AUR
 for PKG in "${AUR_PKGS[@]}";
