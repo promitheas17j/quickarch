@@ -2,87 +2,9 @@
 
 SCRIPT_ORIGINAL_DIR=$(pwd)
 
-PACMAN_PKGS=(
-	'zsh'
-	'mesa'
-	'sddm'
-	'xorg-server'
-	'xorg-apps'
-	'xorg-xinit'
-	'xf86-video-amdgpu'
-	'neovim'
-	'bspwm'
-	'sxhkd'
-	'wpa_supplicant'
-	'bluez'
-	'bluez-utils'
-	'git'
-	'chezmoi'
-	'alacritty'
-	'openssh'
-	'man-db'
-	'man-pages'
-	'polybar'
-	'alsa-utils'
-	'pulseaudio'
-	'vlc'
-	'ssh-keygen'
-	'yay'
-	'rofi'
-	'lsof'
-	'qbittorrent'
-	'copyq'
-	'thunar'
-	'thunderbird'
-	'zip'
-	'unzip'
-	'sddm'
-	'qt5-quickcontrols2'
-	'qt5-graphicaleffects'
-	'qt5-svg'
-	'flameshot'
-	'htop'
-	'fd'
-	'xfce4-power-manager'
-	'discord'
-	'feh'
-	'ripgrep'
-	'mlocate'
-	'neofetch'
-	'pacman-contrib'
-	'xdotool'
-	'lxappearance'
-	'xclip'
-	'homebank'
-	'dunst'
-)	
+# Run custom script that handles everything related to actual installation of packages
+./install_pkgs.sh
 
-AUR_PKGS=(
-	'brave-bin'
-	'pavucontrol'
-	'stremio'
-	'anydesk-bin'
-	'sddm-theme-tokyo-night'
-	'unixbench'
-	'beeper'
-	'netflix'
-	'dracula-cursors-git'
-	'lf'
-	'nerd-fonts-meta'
-	'spotify'
-)
-
-OPTIONAL_PACMAN_PACKAGES=(
-	'qemu-full'
-	'qemu-emulators-full'
-)
-
-${choice_optional_pkgs}='-'
-
-while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N'  ]];
-do
-	read "choice_optional_pkgs?Would you like to install optional packages? [yY/nN]"
-done
 # Enable NetworkManager to start on boot
 systemctl enable NetworkManager
 
@@ -104,30 +26,20 @@ pacman -Syyu --noconfirm
 # Export default editor to be neovim
 export EDITOR=nvim
 
-# Installing packages
-for PKG in "${PACMAN_PKGS[@]}";
-do
-	echo "Installing: ${PKG}"
-	pacman -S "$PKG" --noconfirm --needed
-done
-
-# Only install the optional packages if user wants to
-if [[ "${choice_optional_pkgs}" = 'y' || "${choice_optional_pkgs}" = 'Y']]
-then
-	for PKG in "${OPTIONAL_PACMAN_PACKAGES[@]}";
-	do
-		echo "Installing optional package: ${PKG}"
-		pacman -S "${PKG}" --noconfirm --needed
-	done
-fi
-
 # Create user
 useradd -m -g users -s /bin/zsh mart
 usermod -aG wheel root
 usermod -aG wheel mart
 
-# Make directory for software installations requiring file to be downloaded
-mkdir /home/mart/Software
+# Make directories
+mkdir /home/mart/Software # For software that needs files downloaded e.g. git cloning
+mkdir ~/.themes
+mkdir ~/.icons
+mkdir -p /home/mart/Documents
+mkdir -p /home/mart/Pictures
+mkdir -p /home/mart/Downloads
+mkdir -p /mnt/usb_1/ /mnt/usb_2/ # Create directories for mountable media
+
 cd /home/mart/Software
 
 # Download and install yay
@@ -136,7 +48,6 @@ cd yay
 makepkg -si --noconfirm
 
 # Set grub theme to dracula
-cd ~/Software
 git clone https://github.com/dracula/grub.git grub-dracula
 cp -r grub-dracula/dracula /boot/grub/themes
 
@@ -146,25 +57,15 @@ git clone https://github.com/dracula/copyq.git copyq-dracula
 cp copyq-dracula/dracula.ini $copyq_themes_dir
 
 # Set dunst theme to dracula
-cd ~/Software
 git clone https://github.com/dracula/dunst.git dunst-dracula
 mkdir -p ~/.config/dunst
 cp dunst-dracula/dunstrc ~/.config/dunst/
 
-# Installing packages from AUR
-for PKG in "${AUR_PKGS[@]}";
-do
-	echo "[AUR] Installing: ${PKG}"
-	yay -S "$PKG" --noconfirm --needed
-done
+# Set GTK theme to dracula
+git clone https://github.com/dracula/gtk.git ~/.themes/gtk-master-dracula
 
-# General 'housecleaning' stuff
-mkdir -p /home/mart/Documents
-mkdir -p /home/mart/Pictures
-mkdir -p /home/mart/Downloads
-
-# Create a couple directories for mounting usb's
-mkdir -p /mnt/usb_1/ /mnt/usb_2/
+# Set icon theme to dracula
+git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip ~/.icons/gtk-icons-dracula
 
 # SDDM configuration
 cd $SCRIPT_ORIGINAL_DIR
