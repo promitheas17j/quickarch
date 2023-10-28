@@ -53,6 +53,7 @@ PACMAN_PKGS=(
 	'xclip'
 	'homebank'
 	'dunst'
+	'picom'
 )	
 
 AUR_PKGS=(
