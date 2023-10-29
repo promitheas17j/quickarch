@@ -55,7 +55,6 @@ PACMAN_PKGS=(
 	'dunst'
 	'picom'
 	'hexchat'
-	'texlive-basic'
 	'zathura'
 	'zathura-pdf-poppler'
 )	
@@ -78,9 +77,15 @@ AUR_PKGS=(
 OPTIONAL_PACMAN_PACKAGES=(
 	'qemu-full'
 	'qemu-emulators-full'
+	'texlive-full'
 )
 
 ${choice_optional_pkgs}='-'
+
+for PKG in "${OPTIONAL_PACMAN_PACKAGES}";
+do
+	echo "${PKG}"
+done
 
 while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N'  ]];
 do
