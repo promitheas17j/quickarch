@@ -54,6 +54,7 @@ PACMAN_PKGS=(
 	'homebank'
 	'dunst'
 	'picom'
+	'hexchat'
 )	
 
 AUR_PKGS=(
