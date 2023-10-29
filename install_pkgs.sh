@@ -55,6 +55,9 @@ PACMAN_PKGS=(
 	'dunst'
 	'picom'
 	'hexchat'
+	'texlive-basic'
+	'zathura'
+	'zathura-pdf-poppler'
 )	
 
 AUR_PKGS=(
