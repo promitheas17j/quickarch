@@ -57,6 +57,8 @@ PACMAN_PKGS=(
 	'hexchat'
 	'zathura'
 	'zathura-pdf-poppler'
+	'kdeconnect'
+	'ufw'
 )	
 
 AUR_PKGS=(

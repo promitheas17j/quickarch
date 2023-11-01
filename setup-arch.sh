@@ -79,6 +79,20 @@ updatedb
 mkdir -p /etc/pacman.d/hooks
 cp clean_package_cache.hook /etc/pacman.d/hooks/
 
+# Prepare ufw
+systemctl enable ufw.service
+systemctl start ufw.service
+ufw enable
+
+# KDEConnect firewall settings
+ufw allow 1714:1764/udp
+ufw allow 1714:1764/tcp
+ufw reload
+
+ufw allow http
+ufw allow https
+ufw allow www
+
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
 
