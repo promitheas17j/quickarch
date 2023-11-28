@@ -60,6 +60,7 @@ PACMAN_PKGS=(
 	'kdeconnect'
 	'ufw'
 	'gimp'
+	'inkscape'
 )
 
 AUR_PKGS=(
