@@ -59,7 +59,8 @@ PACMAN_PKGS=(
 	'zathura-pdf-poppler'
 	'kdeconnect'
 	'ufw'
-)	
+	'gimp'
+)
 
 AUR_PKGS=(
 	'brave-bin'
