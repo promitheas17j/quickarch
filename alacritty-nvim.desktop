@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Nvim in Alacritty window
+Exec=sh -c "$HOME/.bin/alacritty-nvim" %U
+Type=Application
+Terminal=True

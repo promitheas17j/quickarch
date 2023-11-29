@@ -1,6 +1,7 @@
 #!/bin/sh
 
 SCRIPT_ORIGINAL_DIR=$(pwd)
+read "username?What would you like your users name to be: "
 
 # Run custom script that handles everything related to actual installation of packages
 ./install_pkgs.sh
@@ -8,7 +9,7 @@ SCRIPT_ORIGINAL_DIR=$(pwd)
 # Enable NetworkManager to start on boot
 systemctl enable NetworkManager
 
-# Make NetworkManager is running
+# Make sure NetworkManager is running
 systemctl start NetworkManager
 
 # Install reflector with all default options
@@ -27,20 +28,20 @@ pacman -Syyu --noconfirm
 export EDITOR=nvim
 
 # Create user
-useradd -m -g users -s /bin/zsh mart
+useradd -m -g users -s /bin/zsh $username
 usermod -aG wheel root
-usermod -aG wheel mart
+usermod -aG wheel $username
 
 # Make directories
-mkdir /home/mart/Software # For software that needs files downloaded e.g. git cloning
+mkdir /home/$username/Software # For software that needs files downloaded e.g. git cloning
 mkdir ~/.themes
 mkdir ~/.icons
-mkdir -p /home/mart/Documents
-mkdir -p /home/mart/Pictures
-mkdir -p /home/mart/Downloads
+mkdir -p /home/$username/Documents
+mkdir -p /home/$username/Pictures
+mkdir -p /home/$username/Downloads
 mkdir -p /mnt/usb_1/ /mnt/usb_2/ # Create directories for mountable media
 
-cd /home/mart/Software
+cd /home/$username/Software
 
 # Download and install yay
 git clone https://aur.archlinux.org/yay.git
@@ -92,6 +93,15 @@ ufw reload
 ufw allow http
 ufw allow https
 ufw allow www
+
+# Copy .desktop file used to run neovim within a new alacritty window to the local applications directroy
+
+cp alacritty-nvim.desktop /home/$username/.local/share/applications/
+# Set some default apps by filetype
+xdg-mime default feh.desktop image/png
+xdg-mime default feh.desktop image/jpeg
+xdg-mime default org.pwmt.zathura-pdf-poppler.desktop application/pdf
+xdg-mime default alacritty-nvim.desktop inode/x-empty
 
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb

@@ -61,6 +61,8 @@ PACMAN_PKGS=(
 	'ufw'
 	'gimp'
 	'inkscape'
+	'vulkan-radeon'
+	'lib32-vulkan-radeon'
 )
 
 AUR_PKGS=(
@@ -85,9 +87,19 @@ OPTIONAL_PACMAN_PACKAGES=(
 	'texlive-full'
 )
 
-${choice_optional_pkgs}='-'
+GAMING_PACKAGES=(
+	'steam'
+	'lutris'
+)
 
+${choice_optional_pkgs}='-'
 for PKG in "${OPTIONAL_PACMAN_PACKAGES}";
+do
+	echo "${PKG}"
+done
+
+${choice_gaming_pkgs}='-'
+for PKG in "${GAMING_PACKAGES}";
 do
 	echo "${PKG}"
 done
@@ -95,6 +107,11 @@ done
 while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N'  ]];
 do
 	read "choice_optional_pkgs?Would you like to install optional packages? [yY/nN]"
+done
+
+while [[ ${choice_gaming_pkgs} != 'y' && ${choice_gaming_pkgs} != 'Y' &&  ${choice_gaming_pkgs} != 'n' && ${choice_gaming_pkgs} != 'N'  ]];
+do
+	read "choice_gaming_pkgs?Would you like to install gaming packages? [yY/nN]"
 done
 
 # Installing packages
@@ -110,6 +127,16 @@ then
 	for PKG in "${OPTIONAL_PACMAN_PACKAGES[@]}";
 	do
 		echo "Installing optional package: ${PKG}"
+		pacman -S "${PKG}" --noconfirm --needed
+	done
+fi
+
+# Only install the gaming packages if user wants to
+if [[ "${choice_gaming_pkgs}" = 'y' || "${choice_gaming_pkgs}" = 'Y']]
+then
+	for PKG in "${GAMING_PACKAGES[@]}";
+	do
+		echo "Installing gaming package: ${PKG}"
 		pacman -S "${PKG}" --noconfirm --needed
 	done
 fi
