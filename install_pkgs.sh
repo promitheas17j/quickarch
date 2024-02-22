@@ -63,6 +63,7 @@ PACMAN_PKGS=(
 	'inkscape'
 	'vulkan-radeon'
 	'lib32-vulkan-radeon'
+	'ntp'
 )
 
 AUR_PKGS=(
