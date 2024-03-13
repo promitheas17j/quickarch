@@ -64,6 +64,7 @@ PACMAN_PKGS=(
 	'vulkan-radeon'
 	'lib32-vulkan-radeon'
 	'ntp'
+	'valgrind'
 )
 
 AUR_PKGS=(
