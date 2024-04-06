@@ -81,6 +81,7 @@ AUR_PKGS=(
 	'nerd-fonts-meta'
 	'spotify'
 	'ledger-live'
+	'passy'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
