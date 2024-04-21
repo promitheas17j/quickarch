@@ -34,12 +34,15 @@ usermod -aG wheel $username
 
 # Make directories
 mkdir /home/$username/Software # For software that needs files downloaded e.g. git cloning
-mkdir ~/.themes
-mkdir ~/.icons
-mkdir -p /home/$username/Documents
-mkdir -p /home/$username/Pictures
-mkdir -p /home/$username/Downloads
+mkdir /home/$username/themes
+mkdir /home/$username/.icons
+mkdir /home/$username/.bin
+mkdir /home/$username/Documents
+mkdir /home/$username/Pictures
+mkdir /home/$username/Downloads
 mkdir -p /mnt/usb_1/ /mnt/usb_2/ # Create directories for mountable media
+mkdir -p /home/$username/.config/dunst
+mkdir -p /etc/pacman.d/hooks
 
 cd /home/$username/Software
 
@@ -53,20 +56,19 @@ git clone https://github.com/dracula/grub.git grub-dracula
 cp -r grub-dracula/dracula /boot/grub/themes
 
 # Download copyq dracula theme and copy it to themes directory
-copyq_themes_dir="$(copyq info themes)"
-git clone https://github.com/dracula/copyq.git copyq-dracula
-cp copyq-dracula/dracula.ini $copyq_themes_dir
+# copyq_themes_dir="$(copyq info themes)"
+git clone https://github.com/dracula/copyq.git copyq-dracula $(copyq info themes)
+# cp copyq-dracula/dracula.ini $(copyq info themes)
 
 # Set dunst theme to dracula
-git clone https://github.com/dracula/dunst.git dunst-dracula
-mkdir -p ~/.config/dunst
-cp dunst-dracula/dunstrc ~/.config/dunst/
+git clone https://github.com/dracula/dunst.git dunst-dracula /home/$username/.config/dunst
+# cp dunst-dracula/dunstrc ~/.config/dunst/
 
 # Set GTK theme to dracula
-git clone https://github.com/dracula/gtk.git ~/.themes/gtk-master-dracula
+git clone https://github.com/dracula/gtk.git /home/$username/.themes/gtk-master-dracula
 
 # Set icon theme to dracula
-git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip ~/.icons/gtk-icons-dracula
+git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip /home/$username/.icons/gtk-icons-dracula
 
 # SDDM configuration
 cd $SCRIPT_ORIGINAL_DIR
@@ -74,10 +76,12 @@ systemctl enable sddm
 cp sddm/sddm.conf /etc/sddm.conf
 cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
 
+# Set global environment variables by appending to the /etc/environment file 
+echo "PATH=$PATH:/home/$username/.bin" | sudo tee -a /etc/environment > /dev/null
+
 updatedb
 
 # Create pacman hook to clean cache after update, install, and remove operations
-mkdir -p /etc/pacman.d/hooks
 cp clean_package_cache.hook /etc/pacman.d/hooks/
 
 # Prepare ufw
@@ -89,18 +93,13 @@ ufw enable
 systemctl enable ntpd.service
 systemctl start ntpd.service
 
-# KDEConnect firewall settings
-ufw allow 1714:1764/udp
-ufw allow 1714:1764/tcp
-ufw reload
-
 ufw allow http
 ufw allow https
 ufw allow www
 
 # Copy .desktop file used to run neovim within a new alacritty window to the local applications directroy
-
 cp alacritty-nvim.desktop /home/$username/.local/share/applications/
+
 # Set some default apps by filetype
 xdg-mime default feh.desktop image/png
 xdg-mime default feh.desktop image/jpeg
