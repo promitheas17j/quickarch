@@ -57,7 +57,6 @@ PACMAN_PKGS=(
 	'hexchat'
 	'zathura'
 	'zathura-pdf-poppler'
-	'kdeconnect'
 	'ufw'
 	'gimp'
 	'inkscape'
@@ -65,6 +64,7 @@ PACMAN_PKGS=(
 	'lib32-vulkan-radeon'
 	'ntp'
 	'valgrind'
+	'fzf'
 )
 
 AUR_PKGS=(
@@ -74,7 +74,7 @@ AUR_PKGS=(
 	'anydesk-bin'
 	'sddm-theme-tokyo-night'
 	'unixbench'
-	'beeper'
+	'beeper-latest-bin'
 	'netflix'
 	'dracula-cursors-git'
 	'lf'
@@ -82,6 +82,9 @@ AUR_PKGS=(
 	'spotify'
 	'ledger-live'
 	'passy'
+	'rar'
+	'ctpv-git'
+	'betterlockscreen'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
@@ -93,26 +96,31 @@ OPTIONAL_PACMAN_PACKAGES=(
 GAMING_PACKAGES=(
 	'steam'
 	'lutris'
+	'bottles'
 )
 
 ${choice_optional_pkgs}='-'
+echo "Optional Packages:"
 for PKG in "${OPTIONAL_PACMAN_PACKAGES}";
 do
 	echo "${PKG}"
 done
 
 ${choice_gaming_pkgs}='-'
+echo
+echo
+echo "Gaming Packages:"
 for PKG in "${GAMING_PACKAGES}";
 do
 	echo "${PKG}"
 done
 
-while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N'  ]];
+while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N' ]];
 do
 	read "choice_optional_pkgs?Would you like to install optional packages? [yY/nN]"
 done
 
-while [[ ${choice_gaming_pkgs} != 'y' && ${choice_gaming_pkgs} != 'Y' &&  ${choice_gaming_pkgs} != 'n' && ${choice_gaming_pkgs} != 'N'  ]];
+while [[ ${choice_gaming_pkgs} != 'y' && ${choice_gaming_pkgs} != 'Y' &&  ${choice_gaming_pkgs} != 'n' && ${choice_gaming_pkgs} != 'N' ]];
 do
 	read "choice_gaming_pkgs?Would you like to install gaming packages? [yY/nN]"
 done
@@ -124,13 +132,20 @@ do
 	pacman -S "$PKG" --noconfirm --needed
 done
 
+# Installing packages from AUR
+for PKG in "${AUR_PKGS[@]}";
+do
+	echo "[AUR] Installing: ${PKG}"
+	yay -S "$PKG" --noconfirm --needed
+done
+
 # Only install the optional packages if user wants to
 if [[ "${choice_optional_pkgs}" = 'y' || "${choice_optional_pkgs}" = 'Y']]
 then
 	for PKG in "${OPTIONAL_PACMAN_PACKAGES[@]}";
 	do
 		echo "Installing optional package: ${PKG}"
-		pacman -S "${PKG}" --noconfirm --needed
+		yay -S "${PKG}" --noconfirm --needed
 	done
 fi
 
@@ -140,13 +155,6 @@ then
 	for PKG in "${GAMING_PACKAGES[@]}";
 	do
 		echo "Installing gaming package: ${PKG}"
-		pacman -S "${PKG}" --noconfirm --needed
+		yay -S "${PKG}" --noconfirm --needed
 	done
 fi
-
-# Installing packages from AUR
-for PKG in "${AUR_PKGS[@]}";
-do
-	echo "[AUR] Installing: ${PKG}"
-	yay -S "$PKG" --noconfirm --needed
-done
