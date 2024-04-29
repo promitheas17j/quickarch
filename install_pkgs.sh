@@ -85,6 +85,7 @@ AUR_PKGS=(
 	'rar'
 	'ctpv-git'
 	'betterlockscreen'
+	'zenmap'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
