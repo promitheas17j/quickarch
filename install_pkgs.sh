@@ -65,6 +65,7 @@ PACMAN_PKGS=(
 	'ntp'
 	'valgrind'
 	'fzf'
+	'tree'
 )
 
 AUR_PKGS=(
