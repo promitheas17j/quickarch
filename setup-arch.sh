@@ -83,6 +83,7 @@ updatedb
 
 # Create pacman hook to clean cache after update, install, and remove operations
 cp clean_package_cache.hook /etc/pacman.d/hooks/
+cp remap_caps_esc.hook /etc/pacman.d/hooks/
 
 # Prepare ufw
 systemctl enable ufw.service
@@ -105,6 +106,7 @@ xdg-mime default feh.desktop image/png
 xdg-mime default feh.desktop image/jpeg
 xdg-mime default org.pwmt.zathura-pdf-poppler.desktop application/pdf
 xdg-mime default alacritty-nvim.desktop inode/x-empty
+xdg-mime default vlc.desktop audio/x-m4a
 
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb

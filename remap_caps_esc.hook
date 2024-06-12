@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Upgrade
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+[Action]
+Description = Remap caps key to escape and vice versa
+When = PostTransaction
+Exec = /home/mart/.bin/remap-caps-esc
