@@ -82,7 +82,7 @@ AUR_PKGS=(
 	'lf'
 	'nerd-fonts-meta'
 	'spotify'
-	'ledger-live'
+	'ledger-live-bin'
 	'passy'
 	'rar'
 	'ctpv-git'
