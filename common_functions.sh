@@ -1,6 +1,6 @@
 log_result() {
-	local file_name="$1"
-    local exit_status="$2"
+    local exit_status="$1"
+	local file_name="$2"
     local success_message="$3"
     local failure_message="$4"
     local log_file="${5:-quickarch_logs.txt}"
