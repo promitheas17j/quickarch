@@ -6,7 +6,9 @@ exported_log_function=$(typeset -f log_result)
 SCRIPT_ORIGINAL_DIR=$(pwd)
 read "username?What would you like your users name to be: "
 read -s "password?Enter the desired password for $username:"
-read -s "confirm_pass?Confirm the password for $username"
+echo
+read -s "confirm_pass?Confirm the password for $username:"
+echo
 if [[ "$password" != "$confirm_pass" ]];
 then
 	echo "Passwords do not match.Exiting."
@@ -158,6 +160,8 @@ log_result $? "setup_arch.sh" "Set vlc as default audio application" "Set vlc as
 # Synchronise with dotfiles repository using chezmoi
 su - "$username" <<EOF
 	eval $exported_log_function
+	cd /home/$username/
+	log_result $? "Changed directory to user home ($(pwd))" "Failed to change directory to user home ($(pwd))"
 	chezmoi init https://github.com/promitheas17j/dotfiles.git
 	log_result $? "setup_arch.sh" "Initialised chezmoi repo" "Failed to initialise chezmoi repo"
 	cd /home/"$username"/.local/share/chezmoi
