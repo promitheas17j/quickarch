@@ -102,14 +102,14 @@ GAMING_PACKAGES=(
 	'bottles'
 )
 
-choice_optional_pkgs='-'
+choice_optional_pkgs='z'
 echo "Optional Packages:"
 for PKG in "${OPTIONAL_PACMAN_PACKAGES}";
 do
 	echo "${PKG}"
 done
 
-choice_gaming_pkgs='-'
+choice_gaming_pkgs='z'
 echo
 echo
 echo "Gaming Packages:"
