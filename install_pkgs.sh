@@ -122,11 +122,13 @@ while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${
 do
 	read "choice_optional_pkgs?Would you like to install optional packages? [yY/nN]"
 done
+echo "install_pkgs.sh:: Install optional packages: ${choice_optional_pkgs}" >>setup_log.txt
 
 while [[ ${choice_gaming_pkgs} != 'y' && ${choice_gaming_pkgs} != 'Y' &&  ${choice_gaming_pkgs} != 'n' && ${choice_gaming_pkgs} != 'N' ]];
 do
 	read "choice_gaming_pkgs?Would you like to install gaming packages? [yY/nN]"
 done
+echo "install_pkgs.sh:: Install gaming packages: ${choice_gaming_pkgs}" >> setup_log.txt
 
 # Installing packages
 # Switch into non-root user to install yay
@@ -137,11 +139,13 @@ su - "$username" <<EOF
 	cd $HOME
 	rm -r $HOME/yay
 EOF
+echo "install_pkgs.sh:: Installed yay" >> setup_log.txt
 
 for PKG in "${PACMAN_PKGS[@]}";
 do
 	echo "Installing: ${PKG}"
 	pacman -S "$PKG" --noconfirm --needed
+	echo "install_pkgs.sh:: Installed pacman package: ${PKG}" >> setup_log.txt
 done
 
 # Installing packages from AUR
@@ -149,6 +153,7 @@ for PKG in "${AUR_PKGS[@]}";
 do
 	echo "[AUR] Installing: ${PKG}"
 	yay -S "$PKG" --noconfirm --needed
+	echo "install_pkgs.sh:: Installed AUR package: ${PKG}" >> setup_log.txt
 done
 
 # Only install the optional packages if user wants to
@@ -158,6 +163,7 @@ then
 	do
 		echo "Installing optional package: ${PKG}"
 		yay -S "${PKG}" --noconfirm --needed
+		echo "install_pkgs.sh:: Installed optional package: ${PKG}" >> setup_log.txt
 	done
 fi
 
@@ -168,5 +174,6 @@ then
 	do
 		echo "Installing gaming package: ${PKG}"
 		yay -S "${PKG}" --noconfirm --needed
+		echo "install_pkgs.sh:: Installed gaming package: ${PKG}" >> setup_log.txt
 	done
 fi
