@@ -75,6 +75,13 @@ git clone https://github.com/dracula/grub.git grub-dracula
 cp -r grub-dracula/dracula /boot/grub/themes
 log_result $? "setup_arch.sh" "Set grub theme to dracula" "Failed to set grub theme to dracula"
 
+# Update grub configuration to set the theme
+if [ "$(grep -q '^GRUB_THEME=' /etc/default/grub && echo yes || echo no)" = "no" ]; then
+    echo 'GRUB_THEME="/boot/grub/themes/dracula/theme.txt"' >> /etc/default/grub
+else
+    sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/dracula/theme.txt"|' /etc/default/grub
+fi
+
 # Download copyq dracula theme and copy it to themes directory
 # copyq_themes_dir="$(copyq info themes)"
 git clone https://github.com/dracula/copyq.git copyq-dracula $(copyq info themes)
