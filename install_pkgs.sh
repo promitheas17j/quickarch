@@ -89,6 +89,7 @@ AUR_PKGS=(
 	'betterlockscreen'
 	'zenmap'
 	'ttf-cascadia-code-nerd'
+	'sddm-theme-tokyo-night-git'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
