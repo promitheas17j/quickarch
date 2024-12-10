@@ -88,6 +88,7 @@ AUR_PKGS=(
 	'ctpv-git'
 	'betterlockscreen'
 	'zenmap'
+	'ttf-cascadia-code-nerd'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
