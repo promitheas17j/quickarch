@@ -102,11 +102,9 @@ git clone https://github.com/zsh-users/zsh-autosuggestions /home/$username/.oh-m
 cd $SCRIPT_ORIGINAL_DIR
 systemctl enable sddm
 log_result $? "setup_arch.sh" "Enabled sddm service" "Failed to enable sddm service"
-cp sddm/sddm.conf /etc/sddm.conf
 log_result $? "setup_arch.sh" "Copied sddm config to its config directory" "Failed to copy sddm config to its config directory"
-# FIX: Copy /usr/share/sddm/themes/tokyo-night-sddm/ directory to this repo
-# cp -r sddm/tokyo-night-sddm/ /usr/share/sddm/themes/tokyo-night-sddm/
-# log_result $? "setup_arch.sh" "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
+cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
+log_result $? "setup_arch.sh" "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
 
 # Set global environment variables by appending to the /etc/environment file 
 echo "PATH=$PATH:/home/$username/.bin" | sudo tee -a /etc/environment > /dev/null
