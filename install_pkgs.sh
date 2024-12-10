@@ -101,19 +101,7 @@ GAMING_PACKAGES=(
 	'bottles'
 )
 
-log_result() {
-	local exit_status="$1"
-	local success_message="$2"
-	local failure_message="$3"
-	local log_file="${4:-setup_log.txt}"
-
-	if [[ $exit_status -eq 0 ]]; then
-		echo "$(date '+%Y-%m-%d %H:%M:%S') install_pkgs.sh - $success_message" >> "$log_file"
-	else
-		echo "$(date '+%Y-%m-%d %H:%M:%S') install_pkgs.sh - $failure_message" >> "$log_file"
-	fi
-}
-
+source ./common_functions.sh
 username="$1"
 choice_optional_pkgs='z'
 echo "Optional Packages:"
@@ -147,21 +135,21 @@ echo "$(date '+%Y-%m-%d%H:%M:%S') install_pkgs.sh - Install gaming packages: ${c
 # Switch into non-root user to install yay
 su - "$username" <<EOF
 	git clone https://aur.archlinux.org/yay.git ~/yay
-	log_result $? "Cloned yay repository" "Failed to clone yay repository"
+	log_result $? "install_pkgs.sh" "Cloned yay repository" "Failed to clone yay repository"
 	cd ~/yay
-	log_result $? "Changed directory to yay directory" "Failed to change directory to yay repository"
+	log_result $? "install_pkgs.sh" "Changed directory to yay directory" "Failed to change directory to yay repository"
 	makepkg -si --noconfirm
-	log_result $? "Built and installed yay" "Failed to build and install yay"
+	log_result $? "install_pkgs.sh" "Built and installed yay" "Failed to build and install yay"
 	cd ~
 	rm -r ~/yay
-	log_result $? "Cleaned up yay installation directory" "Failed to cleanup yay installation directory"
+	log_result $? "install_pkgs.sh" "Cleaned up yay installation directory" "Failed to cleanup yay installation directory"
 EOF
 
 for PKG in "${PACMAN_PKGS[@]}";
 do
 	echo "Installing: ${PKG}"
 	pacman -S "$PKG" --noconfirm --needed
-	log_result $? "Installed pacman package: ${PKG}" "Failed to install pacman package: ${PKG}"
+	log_result $? "install_pkgs.sh" "Installed pacman package: ${PKG}" "Failed to install pacman package: ${PKG}"
 done
 
 # Installing packages from AUR
@@ -169,7 +157,7 @@ for PKG in "${AUR_PKGS[@]}";
 do
 	echo "[AUR] Installing: ${PKG}"
 	yay -S "$PKG" --noconfirm --needed
-	log_result $? "Installed AUR package: ${PKG}" "Failed to install AUR package: ${PKG}"
+	log_result $? "install_pkgs.sh" "Installed AUR package: ${PKG}" "Failed to install AUR package: ${PKG}"
 done
 
 # Only install the optional packages if user wants to
@@ -179,7 +167,7 @@ then
 	do
 		echo "Installing optional package: ${PKG}"
 		yay -S "${PKG}" --noconfirm --needed
-		log_result $? "Installed optional package: ${PKG}" "Failed to install optional package: ${PKG}"
+		log_result $? "install_pkgs.sh" "Installed optional package: ${PKG}" "Failed to install optional package: ${PKG}"
 	done
 fi
 
@@ -190,6 +178,6 @@ then
 	do
 		echo "Installing gaming package: ${PKG}"
 		yay -S "${PKG}" --noconfirm --needed
-		log_result $? "Installed gaming package: ${PKG}" "Failed to install gaming package: ${PKG}"
+		log_result $? "install_pkgs.sh" "Installed gaming package: ${PKG}" "Failed to install gaming package: ${PKG}"
 	done
 fi

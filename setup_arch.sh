@@ -1,18 +1,6 @@
 #!/bin/zsh
 
-# Logging function
-log_result() {
-	local exit_status="$1"
-	local success_message="$2"
-	local failure_message="$3"
-	local log_file="${4:-setup_log.txt}"
-
-	if [[ $exit_status -eq 0 ]]; then
-		echo "$(date '+%Y-%m-%d %H:%M:%S') setup_arch.sh - $success_message" >> "$log_file"
-	else
-		echo "$(date '+%Y-%m-%d %H:%M:%S') setup_arch.sh - $failure_message" >> "$log_file"
-	fi
-}
+source ./common_functions.sh
 
 SCRIPT_ORIGINAL_DIR=$(pwd)
 read "username?What would you like your users name to be: "
@@ -22,38 +10,38 @@ useradd -m -g users -s /bin/zsh $username
 usermod -aG wheel root
 usermod -aG wheel $username
 echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-log_result $? "Created user ${username} with sudo privileges" "Failed to create user ${username}"
+log_result $? "setup_arch.sh" "Created user ${username} with sudo privileges" "Failed to create user ${username}"
 
 # Run custom script that handles everything related to actual installation of packages
 ./install_pkgs.sh "$username"
 
 # Enable NetworkManager to start on boot
 systemctl enable NetworkManager
-log_result $? "Enabled NetworkManager service" "Failed to enable NetworkManager service"
+log_result $? "setup_arch.sh" "Enabled NetworkManager service" "Failed to enable NetworkManager service"
 
 # Make sure NetworkManager is running
 systemctl start NetworkManager
-log_result $? "Started NetworkManager service" "Failed to start NetworkManager service"
+log_result $? "setup_arch.sh" "Started NetworkManager service" "Failed to start NetworkManager service"
 
 # Install reflector with all default options
 pacman -S --noconfirm reflector
-log_result $? "Installed reflector package" "Failed to install reflector package"
+log_result $? "setup_arch.sh" "Installed reflector package" "Failed to install reflector package"
 
 # Backup mirrorlist
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-log_result $? "Backed up mirrorlist" "Failed to backup mirrorlist"
+log_result $? "setup_arch.sh" "Backed up mirrorlist" "Failed to backup mirrorlist"
 
 # Run reflector to get the best pacman mirrors
 reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-log_result $? "Ran reflector to get best pacman mirrors" "Failed to run reflector to get best pacman mirrors"
+log_result $? "setup_arch.sh" "Ran reflector to get best pacman mirrors" "Failed to run reflector to get best pacman mirrors"
 
 # Update and upgrade the system with all default options
 pacman -Syyu --noconfirm
-log_result $? "Updated and upgraded system" "Failed to update and/or upgrade system"
+log_result $? "setup_arch.sh" "Updated and upgraded system" "Failed to update and/or upgrade system"
 
 # Export default editor to be neovim
 export EDITOR=nvim
-log_result $? "Set EDITOR environment variable to neovim" "Failed to set EDITOR environment variable to neovim"
+log_result $? "setup_arch.sh" "Set EDITOR environment variable to neovim" "Failed to set EDITOR environment variable to neovim"
 
 # Make directories
 mkdir /home/$username/Software # For software that needs files downloaded e.g. git cloning
@@ -66,25 +54,25 @@ mkdir /home/$username/Downloads
 mkdir -p /mnt/usb_1/ /mnt/usb_2/ # Create directories for mountable media
 mkdir -p /home/$username/.config/dunst
 mkdir -p /etc/pacman.d/hooks
-log_result $? "Create necessary directories" "Failed to create necessary directories"
+log_result $? "setup_arch.sh" "Create necessary directories" "Failed to create necessary directories"
 
 cd /home/$username/Software
 
 # Set grub theme to dracula
 git clone https://github.com/dracula/grub.git grub-dracula
 cp -r grub-dracula/dracula /boot/grub/themes
-log_result $? "Set grub theme to dracula" "Failed to set grub theme to dracula"
+log_result $? "setup_arch.sh" "Set grub theme to dracula" "Failed to set grub theme to dracula"
 
 # Download copyq dracula theme and copy it to themes directory
 # copyq_themes_dir="$(copyq info themes)"
 git clone https://github.com/dracula/copyq.git copyq-dracula $(copyq info themes)
 # cp copyq-dracula/dracula.ini $(copyq info themes)
-log_result $? "Downloaded and copied copyq dracula theme to copyq themes directory" "Failed to download and copy copyq theme to its theme directory"
+log_result $? "setup_arch.sh" "Downloaded and copied copyq dracula theme to copyq themes directory" "Failed to download and copy copyq theme to its theme directory"
 
 # Set dunst theme to dracula
 git clone https://github.com/dracula/dunst.git dunst-dracula /home/$username/.config/dunst
 # cp dunst-dracula/dunstrc ~/.config/dunst/
-log_result $? "Set dunst theme to dracula" "Failed to set dunst theme to dracula"
+log_result $? "setup_arch.sh" "Set dunst theme to dracula" "Failed to set dunst theme to dracula"
 
 # Set GTK theme to dracula
 git clone https://github.com/dracula/gtk.git /home/$username/.themes/gtk-master-dracula
@@ -92,65 +80,65 @@ log_result $? "setup-arch.sh:: Set GTK theme to dracula" "Failed to set GTK them
 
 # Set icon theme to dracula
 git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip /home/$username/.icons/gtk-icons-dracula
-log_result $? "Set icons theme to dracula" "Failed to set icons theme to dracula"
+log_result $? "setup_arch.sh" "Set icons theme to dracula" "Failed to set icons theme to dracula"
 
 # SDDM configuration
 cd $SCRIPT_ORIGINAL_DIR
 systemctl enable sddm
-log_result $? "Enabled sddm service" "Failed to enable sddm service"
+log_result $? "setup_arch.sh" "Enabled sddm service" "Failed to enable sddm service"
 cp sddm/sddm.conf /etc/sddm.conf
-log_result $? "Copied sddm config to its config directory" "Failed to copy sddm config to its config directory"
+log_result $? "setup_arch.sh" "Copied sddm config to its config directory" "Failed to copy sddm config to its config directory"
 cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
-log_result $? "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
+log_result $? "setup_arch.sh" "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
 
 # Set global environment variables by appending to the /etc/environment file 
 echo "PATH=$PATH:/home/$username/.bin" | sudo tee -a /etc/environment > /dev/null
-log_result $? "Append user's .bin directory to PATH variable" "Failed to append user's .bin directory to PATH variable"
+log_result $? "setup_arch.sh" "Append user's .bin directory to PATH variable" "Failed to append user's .bin directory to PATH variable"
 
 updatedb
-log_result $? "Update db for file locating applications" "Failed to update db for file locating applications"
+log_result $? "setup_arch.sh" "Update db for file locating applications" "Failed to update db for file locating applications"
 
 # Create pacman hook to clean cache after update, install, and remove operations
 cp clean_package_cache.hook /etc/pacman.d/hooks/
 cp remap_caps_esc.hook /etc/pacman.d/hooks/
-log_result $? "Copy pacman hooks to the required directory" "Failed to copy pacman hooks to the required directory"
+log_result $? "setup_arch.sh" "Copy pacman hooks to the required directory" "Failed to copy pacman hooks to the required directory"
 
 # Prepare ufw
 systemctl enable ufw.service
-log_result $? "Enable ufw service" "Failed to enable ufw service"
+log_result $? "setup_arch.sh" "Enable ufw service" "Failed to enable ufw service"
 systemctl start ufw.service
-log_result $? "Start ufw service" "Failed to start ufw service"
+log_result $? "setup_arch.sh" "Start ufw service" "Failed to start ufw service"
 ufw enable
-log_result $? "Enable ufw" "Failed to enable ufw"
+log_result $? "setup_arch.sh" "Enable ufw" "Failed to enable ufw"
 
 # Enable ntp daemon to avoid time desynchronisation
 systemctl enable ntpd.service
-log_result $? "Enable ntpd service" "Failed to enable ntpd service"
+log_result $? "setup_arch.sh" "Enable ntpd service" "Failed to enable ntpd service"
 systemctl start ntpd.service
-log_result $? "Start ntpd service" "Failed to start ntpd service"
+log_result $? "setup_arch.sh" "Start ntpd service" "Failed to start ntpd service"
 
 ufw allow http
-log_result $? "Allow http in ufw" "Failed to allow http in ufw"
+log_result $? "setup_arch.sh" "Allow http in ufw" "Failed to allow http in ufw"
 ufw allow https
-log_result $? "Allow https in ufw" "Failed to allow https in ufw"
+log_result $? "setup_arch.sh" "Allow https in ufw" "Failed to allow https in ufw"
 ufw allow www
-log_result $? "Allow www in ufw" "Failed to allow www in ufw"
+log_result $? "setup_arch.sh" "Allow www in ufw" "Failed to allow www in ufw"
 
 # Copy .desktop file used to run neovim within a new alacritty window to the local applications directroy
 cp alacritty-nvim.desktop /home/$username/.local/share/applications/
-log_result $? "Copy .desktop file used to run neovim within a new alacritty window to the local applications directory" "Failed to copy .desktop file used to run neovim within a new alacritty window to the local applications directory"
+log_result $? "setup_arch.sh" "Copy .desktop file used to run neovim within a new alacritty window to the local applications directory" "Failed to copy .desktop file used to run neovim within a new alacritty window to the local applications directory"
 
 # Set some default apps by filetype
 xdg-mime default feh.desktop image/png
-log_result $? "Set feh as default image application (png)" "Failed to set feh as default image applicatin (png)"
+log_result $? "setup_arch.sh" "Set feh as default image application (png)" "Failed to set feh as default image applicatin (png)"
 xdg-mime default feh.desktop image/jpeg
-log_result $? "Set feh as default image application (jpeg)" "Failed to set feh as default image applicatin (jpeg)"
+log_result $? "setup_arch.sh" "Set feh as default image application (jpeg)" "Failed to set feh as default image applicatin (jpeg)"
 xdg-mime default org.pwmt.zathura-pdf-poppler.desktop application/pdf
-log_result $? "Set zathura as default pdf application" "Failed to set zathura as default pdf application"
+log_result $? "setup_arch.sh" "Set zathura as default pdf application" "Failed to set zathura as default pdf application"
 xdg-mime default alacritty-nvim.desktop inode/x-empty
-log_result $? "Set alacritty as default application for inode/empty files" "Failed to set alacritty as default application for inode/empty files"
+log_result $? "setup_arch.sh" "Set alacritty as default application for inode/empty files" "Failed to set alacritty as default application for inode/empty files"
 xdg-mime default vlc.desktop audio/x-m4a
-log_result $? "Set vlc as default audio application" "Set vlc as default audio application"
+log_result $? "setup_arch.sh" "Set vlc as default audio application" "Set vlc as default audio application"
 
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
@@ -162,7 +150,7 @@ su - "$username" <<EOF
 	git pull
 	chezmoi update -v
 EOF
-log_result $? "Synchronised dotfiles from remote dotfiles repo with chezmoi" "Failed to synchronise dotfiles from remote dotfiles repo with chezmoi"
+log_result $? "setup_arch.sh" "Synchronised dotfiles from remote dotfiles repo with chezmoi" "Failed to synchronise dotfiles from remote dotfiles repo with chezmoi"
 
 
 echo "If script finished without errors, do the following:"
