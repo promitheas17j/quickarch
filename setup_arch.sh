@@ -5,9 +5,17 @@ exported_log_function=$(typeset -f log_result)
 
 SCRIPT_ORIGINAL_DIR=$(pwd)
 read "username?What would you like your users name to be: "
+read -s "password?Enter the desired password for $username:"
+read -s "confirm_pass?Confirm the password for $username"
+if [[ "$password" != "$confirm_pass" ]];
+then
+	echo "Passwords do not match.Exiting."
+	exit 1
+fi
 
 # Create user
 useradd -m -g users -s /bin/zsh $username
+echo "$username:$password" | chpasswd
 usermod -aG wheel root
 usermod -aG wheel $username
 echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
@@ -55,6 +63,7 @@ mkdir /home/$username/Downloads
 mkdir -p /mnt/usb_1/ /mnt/usb_2/ # Create directories for mountable media
 mkdir -p /home/$username/.config/dunst
 mkdir -p /etc/pacman.d/hooks
+mkdir -p /home/$username/.local/share/applications
 log_result $? "setup_arch.sh" "Create necessary directories" "Failed to create necessary directories"
 
 cd /home/$username/Software
@@ -89,7 +98,8 @@ systemctl enable sddm
 log_result $? "setup_arch.sh" "Enabled sddm service" "Failed to enable sddm service"
 cp sddm/sddm.conf /etc/sddm.conf
 log_result $? "setup_arch.sh" "Copied sddm config to its config directory" "Failed to copy sddm config to its config directory"
-cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
+# FIX: Copy /usr/share/sddm/themes/tokyo-night-sddm/ directory to this repo
+cp -r sddm/tokyo-night-sddm/ /usr/share/sddm/themes/tokyo-night-sddm/
 log_result $? "setup_arch.sh" "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
 
 # Set global environment variables by appending to the /etc/environment file 
@@ -101,6 +111,7 @@ log_result $? "setup_arch.sh" "Update db for file locating applications" "Failed
 
 # Create pacman hook to clean cache after update, install, and remove operations
 cp clean_package_cache.hook /etc/pacman.d/hooks/
+mkdir -p /home/$username/.local/share/applications
 cp remap_caps_esc.hook /etc/pacman.d/hooks/
 log_result $? "setup_arch.sh" "Copy pacman hooks to the required directory" "Failed to copy pacman hooks to the required directory"
 
