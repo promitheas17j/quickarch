@@ -157,6 +157,9 @@ log_result $? "setup_arch.sh" "Set vlc as default audio application" "Set vlc as
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
 
+# Transfer ownership of user's home directory to them
+chown -R mart:users /home/mart/
+
 # Synchronise with dotfiles repository using chezmoi
 su - "$username" <<EOF
 	eval $exported_log_function
