@@ -95,7 +95,7 @@ git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip /home/$userna
 log_result $? "setup_arch.sh" "Set icons theme to dracula" "Failed to set icons theme to dracula"
 
 # Clone oh-my-zsh repository to user's home directory
-git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+HOME="/home/$username" ZSH="/home/$username/.oh-my-zsh" ZDOTDIR="/home/$username" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-autosuggestions /home/$username/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
 # SDDM configuration
