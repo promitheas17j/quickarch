@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 PACMAN_PKGS=(
 	'zsh'
@@ -129,6 +129,15 @@ do
 done
 
 # Installing packages
+# Switch into non-root user to install yay
+su - "$username" <<EOF
+	git clone https://aur.archlinux.org/yay.git $HOME/yay
+	cd $HOME/yay
+	makepkg -si --noconfirm
+	cd $HOME
+	rm -r $HOME/yay
+EOF
+
 for PKG in "${PACMAN_PKGS[@]}";
 do
 	echo "Installing: ${PKG}"

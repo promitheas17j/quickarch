@@ -1,7 +1,14 @@
-#!/bin/sh
+#!/bin/zsh
 
 SCRIPT_ORIGINAL_DIR=$(pwd)
 read "username?What would you like your users name to be: "
+
+# Create user
+useradd -m -g users -s /bin/zsh $username
+usermod -aG wheel root
+usermod -aG wheel $username
+
+echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Run custom script that handles everything related to actual installation of packages
 ./install_pkgs.sh
@@ -26,11 +33,6 @@ pacman -Syyu --noconfirm
 
 # Export default editor to be neovim
 export EDITOR=nvim
-
-# Create user
-useradd -m -g users -s /bin/zsh $username
-usermod -aG wheel root
-usermod -aG wheel $username
 
 # Make directories
 mkdir /home/$username/Software # For software that needs files downloaded e.g. git cloning
