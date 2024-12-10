@@ -94,6 +94,10 @@ log_result $? "setup-arch.sh:: Set GTK theme to dracula" "Failed to set GTK them
 git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip /home/$username/.icons/gtk-icons-dracula
 log_result $? "setup_arch.sh" "Set icons theme to dracula" "Failed to set icons theme to dracula"
 
+# Clone oh-my-zsh repository to user's home directory
+git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions /home/$username/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
 # SDDM configuration
 cd $SCRIPT_ORIGINAL_DIR
 systemctl enable sddm
