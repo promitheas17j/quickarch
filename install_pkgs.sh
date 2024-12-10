@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+source ./common_functions.sh
+exported_log_function=$(typeset -f log_result)
+
 PACMAN_PKGS=(
 	'zsh'
 	'mesa'
@@ -101,7 +104,6 @@ GAMING_PACKAGES=(
 	'bottles'
 )
 
-source ./common_functions.sh
 username="$1"
 choice_optional_pkgs='z'
 echo "Optional Packages:"
@@ -134,6 +136,7 @@ echo "$(date '+%Y-%m-%d%H:%M:%S') install_pkgs.sh - Install gaming packages: ${c
 # Installing packages
 # Switch into non-root user to install yay
 su - "$username" <<EOF
+	eval $exported_log_function
 	git clone https://aur.archlinux.org/yay.git ~/yay
 	log_result $? "install_pkgs.sh" "Cloned yay repository" "Failed to clone yay repository"
 	cd ~/yay

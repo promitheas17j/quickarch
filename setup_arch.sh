@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 source ./common_functions.sh
+exported_log_function=$(typeset -f log_result)
 
 SCRIPT_ORIGINAL_DIR=$(pwd)
 read "username?What would you like your users name to be: "
@@ -145,13 +146,16 @@ log_result $? "setup_arch.sh" "Set vlc as default audio application" "Set vlc as
 
 # Synchronise with dotfiles repository using chezmoi
 su - "$username" <<EOF
+	eval $exported_log_function
 	chezmoi init https://github.com/promitheas17j/dotfiles.git
+	log_result $? "setup_arch.sh" "Initialised chezmoi repo" "Failed to initialise chezmoi repo"
 	cd /home/"$username"/.local/share/chezmoi
+	log_result $? "setup_arch.sh" "Changed directory to chezmoi directory" "Failed to change directory to chezmoi directory"
 	git pull
+	log_result $? "setup_arch.sh" "Pulled dotfiles from remote repo" "Failed to pull dotfiles from remote repo"
 	chezmoi update -v
+	log_result $? "setup_arch.sh" "Synched local dotfiles with chezmoi directory dotfiles" "Failed to synch local dotfiles with chezmoi directory dotfiles"
 EOF
-log_result $? "setup_arch.sh" "Synchronised dotfiles from remote dotfiles repo with chezmoi" "Failed to synchronise dotfiles from remote dotfiles repo with chezmoi"
-
 
 echo "If script finished without errors, do the following:"
 echo "\t1) Run: sudo nvim /etc/default/grub"
