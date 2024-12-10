@@ -95,8 +95,6 @@ AUR_PKGS=(
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
-	'qemu-full'
-	'qemu-emulators-full'
 	'texlive-full'
 )
 
