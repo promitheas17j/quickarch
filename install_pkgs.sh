@@ -67,6 +67,8 @@ PACMAN_PKGS=(
 	'fzf'
 	'tree'
 	'pandoc'
+	'noto-fonts'
+	'noto-fonts-emoji'
 )
 
 AUR_PKGS=(

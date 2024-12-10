@@ -101,8 +101,8 @@ log_result $? "setup_arch.sh" "Enabled sddm service" "Failed to enable sddm serv
 cp sddm/sddm.conf /etc/sddm.conf
 log_result $? "setup_arch.sh" "Copied sddm config to its config directory" "Failed to copy sddm config to its config directory"
 # FIX: Copy /usr/share/sddm/themes/tokyo-night-sddm/ directory to this repo
-cp -r sddm/tokyo-night-sddm/ /usr/share/sddm/themes/tokyo-night-sddm/
-log_result $? "setup_arch.sh" "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
+# cp -r sddm/tokyo-night-sddm/ /usr/share/sddm/themes/tokyo-night-sddm/
+# log_result $? "setup_arch.sh" "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
 
 # Set global environment variables by appending to the /etc/environment file 
 echo "PATH=$PATH:/home/$username/.bin" | sudo tee -a /etc/environment > /dev/null
@@ -158,7 +158,7 @@ log_result $? "setup_arch.sh" "Set vlc as default audio application" "Set vlc as
 # localectl set-x11-keymap gb
 
 # Transfer ownership of user's home directory to them
-chown -R mart:users /home/mart/
+chown -R $username:users /home/$username/
 
 # Synchronise with dotfiles repository using chezmoi
 su - "$username" <<EOF
