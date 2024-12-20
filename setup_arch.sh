@@ -187,6 +187,9 @@ su - "$username" <<EOF
 	log_result $? "setup_arch.sh" "Synched local dotfiles with chezmoi directory dotfiles" "Failed to synch local dotfiles with chezmoi directory dotfiles"
 EOF
 
+# Install treesitter cli to get rid of warning
+npm install -g tree-sitter-cli
+
 echo "If script finished without errors, do the following:"
 echo "\t1) Go to copyq -> Preferences -> Appearance and load the dracula theme"
 echo "\t2) Go to thunderbird -> Tools -> Add-ons and Themes and search for dracula then install it"
