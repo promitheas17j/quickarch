@@ -5,26 +5,26 @@ exported_log_function=$(typeset -f log_result)
 
 SCRIPT_ORIGINAL_DIR=$(pwd)
 read "username?What would you like your users name to be: "
-read -s "password?Enter the desired password for $username:"
+read -s "password?Enter the desired password for ${username}:"
 echo
-read -s "confirm_pass?Confirm the password for $username:"
+read -s "confirm_pass?Confirm the password for ${username}:"
 echo
-if [[ "$password" != "$confirm_pass" ]];
+if [[ "${password}" != "$confirm_pass" ]];
 then
 	echo "Passwords do not match.Exiting."
 	exit 1
 fi
 
 # Create user
-useradd -m -g users -s /bin/zsh $username
-echo "$username:$password" | chpasswd
+useradd -m -g users -s /bin/zsh ${username}
+echo "${username}:${password}" | chpasswd
 usermod -aG wheel root
-usermod -aG wheel $username
-echo "$username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+usermod -aG wheel ${username}
+echo "${username} ALL=(ALL:ALL) ALL" > /etc/sudoers.d/${username}
 log_result $? "setup_arch.sh" "Created user ${username} with sudo privileges" "Failed to create user ${username}"
 
 # Run custom script that handles everything related to actual installation of packages
-./install_pkgs.sh "$username"
+./install_pkgs.sh "${username}"
 
 # Enable NetworkManager to start on boot
 systemctl enable NetworkManager
@@ -55,20 +55,20 @@ export EDITOR=nvim
 log_result $? "setup_arch.sh" "Set EDITOR environment variable to neovim" "Failed to set EDITOR environment variable to neovim"
 
 # Make directories
-mkdir /home/$username/Software # For software that needs files downloaded e.g. git cloning
-mkdir /home/$username/themes
-mkdir /home/$username/.icons
-mkdir /home/$username/.bin
-mkdir /home/$username/Documents
-mkdir /home/$username/Pictures
-mkdir /home/$username/Downloads
+mkdir /home/${username}/Software # For software that needs files downloaded e.g. git cloning
+mkdir /home/${username}/themes
+mkdir /home/${username}/.icons
+mkdir /home/${username}/.bin
+mkdir /home/${username}/Documents
+mkdir /home/${username}/Pictures
+mkdir /home/${username}/Downloads
 mkdir -p /mnt/usb_1/ /mnt/usb_2/ # Create directories for mountable media
-mkdir -p /home/$username/.config/dunst
+mkdir -p /home/${username}/.config/dunst
 mkdir -p /etc/pacman.d/hooks
-mkdir -p /home/$username/.local/share/applications
+mkdir -p /home/${username}/.local/share/applications
 log_result $? "setup_arch.sh" "Create necessary directories" "Failed to create necessary directories"
 
-cd /home/$username/Software
+cd /home/${username}/Software
 
 # Set grub theme to dracula
 git clone https://github.com/dracula/grub.git grub-dracula
@@ -92,21 +92,21 @@ git clone https://github.com/dracula/copyq.git copyq-dracula $(copyq info themes
 log_result $? "setup_arch.sh" "Downloaded and copied copyq dracula theme to copyq themes directory" "Failed to download and copy copyq theme to its theme directory"
 
 # Set dunst theme to dracula
-git clone https://github.com/dracula/dunst.git dunst-dracula /home/$username/.config/dunst
+git clone https://github.com/dracula/dunst.git dunst-dracula /home/${username}/.config/dunst
 # cp dunst-dracula/dunstrc ~/.config/dunst/
 log_result $? "setup_arch.sh" "Set dunst theme to dracula" "Failed to set dunst theme to dracula"
 
 # Set GTK theme to dracula
-git clone https://github.com/dracula/gtk.git /home/$username/.themes/gtk-master-dracula
+git clone https://github.com/dracula/gtk.git /home/${username}/.themes/gtk-master-dracula
 log_result $? "setup-arch.sh:: Set GTK theme to dracula" "Failed to set GTK theme to dracula"
 
 # Set icon theme to dracula
-git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip /home/$username/.icons/gtk-icons-dracula
+git clone https://github.com/dracula/gtk/files/5214870/Dracula.zip /home/${username}/.icons/gtk-icons-dracula
 log_result $? "setup_arch.sh" "Set icons theme to dracula" "Failed to set icons theme to dracula"
 
 # Clone oh-my-zsh repository to user's home directory
-HOME="/home/$username" ZSH="/home/$username/.oh-my-zsh" ZDOTDIR="/home/$username" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone https://github.com/zsh-users/zsh-autosuggestions /home/$username/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+HOME="/home/${username}" ZSH="/home/${username}/.oh-my-zsh" ZDOTDIR="/home/${username}" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions /home/${username}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
 # SDDM configuration
 cd $SCRIPT_ORIGINAL_DIR
@@ -117,7 +117,7 @@ cp sddm/theme.conf /usr/share/sddm/themes/tokyo-night-sddm/theme.conf
 log_result $? "setup_arch.sh" "Copied sddm theme to its theme directory" "Failed to copy sddm theme to its theme directory"
 
 # Set global environment variables by appending to the /etc/environment file 
-echo "PATH=$PATH:/home/$username/.bin" | sudo tee -a /etc/environment > /dev/null
+echo "PATH=$PATH:/home/${username}/.bin" | sudo tee -a /etc/environment > /dev/null
 log_result $? "setup_arch.sh" "Append user's .bin directory to PATH variable" "Failed to append user's .bin directory to PATH variable"
 
 updatedb
@@ -125,7 +125,7 @@ log_result $? "setup_arch.sh" "Update db for file locating applications" "Failed
 
 # Create pacman hook to clean cache after update, install, and remove operations
 cp clean_package_cache.hook /etc/pacman.d/hooks/
-mkdir -p /home/$username/.local/share/applications
+mkdir -p /home/${username}/.local/share/applications
 cp remap_caps_esc.hook /etc/pacman.d/hooks/
 log_result $? "setup_arch.sh" "Copy pacman hooks to the required directory" "Failed to copy pacman hooks to the required directory"
 
@@ -151,7 +151,7 @@ ufw allow www
 log_result $? "setup_arch.sh" "Allow www in ufw" "Failed to allow www in ufw"
 
 # Copy .desktop file used to run neovim within a new alacritty window to the local applications directroy
-cp alacritty-nvim.desktop /home/$username/.local/share/applications/
+cp alacritty-nvim.desktop /home/${username}/.local/share/applications/
 log_result $? "setup_arch.sh" "Copy .desktop file used to run neovim within a new alacritty window to the local applications directory" "Failed to copy .desktop file used to run neovim within a new alacritty window to the local applications directory"
 
 # Set some default apps by filetype
@@ -170,16 +170,16 @@ log_result $? "setup_arch.sh" "Set vlc as default audio application" "Set vlc as
 # localectl set-x11-keymap gb
 
 # Transfer ownership of user's home directory to them
-chown -R $username:users /home/$username/
+chown -R ${username}:users /home/${username}/
 
 # Synchronise with dotfiles repository using chezmoi
-su - "$username" <<EOF
+su - "${username}" <<EOF
 	eval $exported_log_function
-	cd /home/$username/
+	cd /home/${username}/
 	log_result $? "Changed directory to user home ($(pwd))" "Failed to change directory to user home ($(pwd))"
 	chezmoi init https://github.com/promitheas17j/dotfiles.git
 	log_result $? "setup_arch.sh" "Initialised chezmoi repo" "Failed to initialise chezmoi repo"
-	cd /home/"$username"/.local/share/chezmoi
+	cd /home/"${username}"/.local/share/chezmoi
 	log_result $? "setup_arch.sh" "Changed directory to chezmoi directory" "Failed to change directory to chezmoi directory"
 	git pull
 	log_result $? "setup_arch.sh" "Pulled dotfiles from remote repo" "Failed to pull dotfiles from remote repo"
@@ -191,7 +191,7 @@ EOF
 npm install -g tree-sitter-cli
 
 # Have packer setup its config and run updates
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+# nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 echo "If script finished without errors, do the following:"
 echo "\t1) Go to copyq -> Preferences -> Appearance and load the dracula theme"
