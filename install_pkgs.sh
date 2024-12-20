@@ -92,6 +92,7 @@ AUR_PKGS=(
 	'zenmap'
 	'ttf-cascadia-code-nerd'
 	'sddm-theme-tokyo-night-git'
+	'nvim-packer-git'	
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
