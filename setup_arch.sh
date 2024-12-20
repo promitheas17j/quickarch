@@ -190,6 +190,9 @@ EOF
 # Install treesitter cli to get rid of warning
 npm install -g tree-sitter-cli
 
+# Have packer setup its config and run updates
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+
 echo "If script finished without errors, do the following:"
 echo "\t1) Go to copyq -> Preferences -> Appearance and load the dracula theme"
 echo "\t2) Go to thunderbird -> Tools -> Add-ons and Themes and search for dracula then install it"
