@@ -94,7 +94,7 @@ AUR_PKGS=(
 	'zenmap'
 	'ttf-cascadia-code-nerd'
 	'sddm-theme-tokyo-night-git'
-	'nvim-packer-git'	
+	'nvim-packer-git'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
@@ -115,6 +115,12 @@ do
 	echo "${PKG}"
 done
 
+while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N' ]];
+do
+	read "choice_optional_pkgs?Would you like to install optional packages? [yY/nN]"
+done
+echo "$(date '+%Y-%m-%d%H:%M:%S') install_pkgs.sh - Install optional packages: ${choice_optional_pkgs}" >> quickarch_logs.txt
+
 choice_gaming_pkgs='z'
 echo
 echo
@@ -124,12 +130,6 @@ do
 	echo "${PKG}"
 done
 
-while [[ ${choice_optional_pkgs} != 'y' && ${choice_optional_pkgs} != 'Y' &&  ${choice_optional_pkgs} != 'n' && ${choice_optional_pkgs} != 'N' ]];
-do
-	read "choice_optional_pkgs?Would you like to install optional packages? [yY/nN]"
-done
-echo "$(date '+%Y-%m-%d%H:%M:%S') install_pkgs.sh - Install optional packages: ${choice_optional_pkgs}" >> quickarch_logs.txt
-
 while [[ ${choice_gaming_pkgs} != 'y' && ${choice_gaming_pkgs} != 'Y' &&  ${choice_gaming_pkgs} != 'n' && ${choice_gaming_pkgs} != 'N' ]];
 do
 	read "choice_gaming_pkgs?Would you like to install gaming packages? [yY/nN]"
@@ -138,7 +138,7 @@ echo "$(date '+%Y-%m-%d%H:%M:%S') install_pkgs.sh - Install gaming packages: ${c
 
 # Installing packages
 # Switch into non-root user to install yay
-su - "$username" <<EOF
+su - "${username}" <<EOF
 	eval $exported_log_function
 	git clone https://aur.archlinux.org/yay.git ~/yay
 	log_result $? "install_pkgs.sh" "Cloned yay repository" "Failed to clone yay repository"
