@@ -68,6 +68,9 @@ mkdir -p /etc/pacman.d/hooks
 mkdir -p /home/${username}/.local/share/applications
 log_result $? "setup_arch.sh" "Create necessary directories" "Failed to create necessary directories"
 
+cp dracula.qbtheme /home/${username}/themes
+log_result $? "setup_arch.sh" "Copied qbittorrent theme to themes directory" "Failed to copy qbittorrent theme to themes directory"
+
 cd /home/${username}/Software
 
 # Set grub theme to dracula
@@ -199,3 +202,9 @@ echo "\t1) Go to copyq -> Preferences -> Appearance and load the dracula theme"
 echo "\t2) Go to thunderbird -> Tools -> Add-ons and Themes and search for dracula then install it"
 echo "\t3) Go to qbittorrent -> Tools -> Preferences -> Behaviour -> Interface -> Use custom UI Theme and select the dracula.qbtheme file"
 echo "\t4) Open the file: /usr/share/dbus-1/services/org.xfce.xfce4-notityd.Notifications.service and change the line Name=org.freedesktop.Notifications to Name=org.freedesktop.NotificationsNone"
+echo "\t5) Check log to see if any software failed to install, and attempt to install it manually after booting into the system"
+echo "\t6) Point betterlockscreen to the wallpapers directory with betterlockscreen -u \"path/to/wallpaper/dir/\""
+echo "\t7) Set up github ssh keys"
+# TODO: Add wallpapers dir to chezmoi
+# TODO: Check if copyq theme present on main pc and add it to quickarch repo to be copied from this script
+
