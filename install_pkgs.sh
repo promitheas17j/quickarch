@@ -70,6 +70,7 @@ PACMAN_PKGS=(
 	'noto-fonts'
 	'noto-fonts-emoji'
 	'network-manager-applet'
+	'libreoffice-still'
 )
 
 AUR_PKGS=(
