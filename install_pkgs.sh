@@ -69,6 +69,7 @@ PACMAN_PKGS=(
 	'pandoc'
 	'noto-fonts'
 	'noto-fonts-emoji'
+	'network-manager-applet'
 )
 
 AUR_PKGS=(
