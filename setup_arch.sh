@@ -168,7 +168,14 @@ log_result $? "setup_arch.sh" "Set zathura as default pdf application" "Failed t
 xdg-mime default alacritty-nvim.desktop inode/x-empty
 log_result $? "setup_arch.sh" "Set alacritty as default application for inode/empty files" "Failed to set alacritty as default application for inode/empty files"
 xdg-mime default vlc.desktop audio/x-m4a
-log_result $? "setup_arch.sh" "Set vlc as default audio application" "Set vlc as default audio application"
+log_result $? "setup_arch.sh" "Set vlc as default audio application" "Failed to set vlc as default audio application"
+
+# Copy wallpapers to ~/Pictures/ so that betterlockscreen has access to them
+cp -r wallpapers/ /home/${username}/Pictures/
+log_result $? "setup_arch.sh" "Copied wallpapers directory to Pictures" "Failedto copy wallpapers directory to Pictures"
+
+# Initialise betterlockscreen with that folder
+betterlockscreen -u /home/${username}/Pictures/wallpapers/ --fx dim --dim 50
 
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
@@ -203,8 +210,6 @@ echo "\t2) Go to thunderbird -> Tools -> Add-ons and Themes and search for dracu
 echo "\t3) Go to qbittorrent -> Tools -> Preferences -> Behaviour -> Interface -> Use custom UI Theme and select the dracula.qbtheme file"
 echo "\t4) Open the file: /usr/share/dbus-1/services/org.xfce.xfce4-notityd.Notifications.service and change the line Name=org.freedesktop.Notifications to Name=org.freedesktop.NotificationsNone"
 echo "\t5) Check log to see if any software failed to install, and attempt to install it manually after booting into the system"
+# Might not need to manually do step 6 as I addedthe instruction after copying the wallpapers directory
 echo "\t6) Point betterlockscreen to the wallpapers directory with betterlockscreen -u \"path/to/wallpaper/dir/\""
 echo "\t7) Set up github ssh keys"
-# TODO: Add wallpapers dir to chezmoi
-# TODO: Check if copyq theme present on main pc and add it to quickarch repo to be copied from this script
-
