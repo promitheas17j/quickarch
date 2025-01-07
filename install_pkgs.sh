@@ -72,6 +72,7 @@ PACMAN_PKGS=(
 	'network-manager-applet'
 	'libreoffice-still'
 	'ntp'
+	'xdo'
 )
 
 AUR_PKGS=(
