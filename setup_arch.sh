@@ -177,6 +177,9 @@ log_result $? "setup_arch.sh" "Copied wallpapers directory to Pictures" "Failedt
 # Initialise betterlockscreen with that folder
 betterlockscreen -u /home/${username}/Pictures/wallpapers/ --fx dim --dim 50
 
+# Copy thinkpad trackpoint configuration to its directory
+cp 20-thinkpad.conf /etc/X11/xorg.conf.d/20-thinkpad.conf
+
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
 
