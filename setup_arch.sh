@@ -147,6 +147,12 @@ log_result $? "setup_arch.sh" "Enable ntpd service" "Failed to enable ntpd servi
 systemctl start ntpd.service
 log_result $? "setup_arch.sh" "Start ntpd service" "Failed to start ntpd service"
 
+# Enable atd service (used for AT command - remind function in .zshrc)
+systemctl enable atd.service
+log_result $? "setup_arch.sh" "Enable atd service" "Failed to enable atd service"
+systemctl start atd.service
+log_result $? "setup_arch.sh" "Start atd service" "Failed to start atd service"
+
 ufw allow http
 log_result $? "setup_arch.sh" "Allow http in ufw" "Failed to allow http in ufw"
 ufw allow https
