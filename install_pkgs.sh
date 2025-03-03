@@ -73,6 +73,7 @@ PACMAN_PKGS=(
 	'libreoffice-still'
 	'ntp'
 	'xdo'
+	'at'
 )
 
 AUR_PKGS=(
