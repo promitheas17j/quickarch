@@ -165,7 +165,7 @@ done
 for PKG in "${AUR_PKGS[@]}";
 do
 	echo "[AUR] Installing: ${PKG}"
-	yay -S "$PKG" --noconfirm --needed
+	yay -S "$PKG" --noconfirm --needed --mflags "--skipinteg"
 	log_result $? "install_pkgs.sh" "Installed AUR package: ${PKG}" "Failed to install AUR package: ${PKG}"
 done
 
@@ -175,7 +175,7 @@ then
 	for PKG in "${OPTIONAL_PACMAN_PACKAGES[@]}";
 	do
 		echo "Installing optional package: ${PKG}"
-		yay -S "${PKG}" --noconfirm --needed
+		yay -S "${PKG}" --noconfirm --needed --mflags "--skipinteg"
 		log_result $? "install_pkgs.sh" "Installed optional package: ${PKG}" "Failed to install optional package: ${PKG}"
 	done
 fi
@@ -186,7 +186,7 @@ then
 	for PKG in "${GAMING_PACKAGES[@]}";
 	do
 		echo "Installing gaming package: ${PKG}"
-		yay -S "${PKG}" --noconfirm --needed
+		yay -S "${PKG}" --noconfirm --needed --mflags "--skipinteg"
 		log_result $? "install_pkgs.sh" "Installed gaming package: ${PKG}" "Failed to install gaming package: ${PKG}"
 	done
 fi

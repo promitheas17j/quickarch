@@ -207,6 +207,12 @@ su - "${username}" <<EOF
 	log_result $? "setup_arch.sh" "Synched local dotfiles with chezmoi directory dotfiles" "Failed to synch local dotfiles with chezmoi directory dotfiles"
 EOF
 
+# Generate correct locales
+sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
+
+# Disable xfce4 notifications
+sed -i 's/^Name=org.freedesktop.Notifications$/Name=org.freedesktop.NotificationsNone/' /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service
+
 # Install treesitter cli to get rid of warning
 npm install -g tree-sitter-cli
 
@@ -217,7 +223,7 @@ echo "If script finished without errors, do the following:"
 echo "\t1) Go to copyq -> Preferences -> Appearance and load the dracula theme"
 echo "\t2) Go to thunderbird -> Tools -> Add-ons and Themes and search for dracula then install it"
 echo "\t3) Go to qbittorrent -> Tools -> Preferences -> Behaviour -> Interface -> Use custom UI Theme and select the dracula.qbtheme file"
-echo "\t4) Open the file: /usr/share/dbus-1/services/org.xfce.xfce4-notityd.Notifications.service and change the line Name=org.freedesktop.Notifications to Name=org.freedesktop.NotificationsNone"
+# echo "\t4) Open the file: /usr/share/dbus-1/services/org.xfce.xfce4-notityd.Notifications.service and change the line Name=org.freedesktop.Notifications to Name=org.freedesktop.NotificationsNone"
 echo "\t5) Check log to see if any software failed to install, and attempt to install it manually after booting into the system"
 # Might not need to manually do step 6 as I addedthe instruction after copying the wallpapers directory
 echo "\t6) Point betterlockscreen to the wallpapers directory with betterlockscreen -u \"path/to/wallpaper/dir/\""
