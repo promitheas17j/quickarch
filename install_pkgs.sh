@@ -50,7 +50,6 @@ PACMAN_PKGS=(
 	'neofetch'
 	'pacman-contrib'
 	'xdotool'
-	'lxappearance'
 	'xclip'
 	'homebank'
 	'dunst'
