@@ -189,8 +189,27 @@ cp 20-thinkpad.conf /etc/X11/xorg.conf.d/20-thinkpad.conf
 # Might need this to properly set keymap
 # localectl set-x11-keymap gb
 
+# Generate correct locales
+sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
+log_result $? "setup_arch.sh" "Edited /etc/locale.gen to uncomment the en_US.UTF-8 locale" "Failed to edit /etc/locale.gen to uncomment the en_US.UTF-8 locale"
+locale-gen
+log_result $? "setup_arch.sh" "Generated locales" "Failed to generate locales"
+
+# Disable xfce4 notifications
+sed -i 's/^Name=org.freedesktop.Notifications$/Name=org.freedesktop.NotificationsNone/' /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service
+log_result $? "setup_arch.sh" "Disabled xfce4 notifications" "Failed to disable xfce4 notifications"
+
+# Install treesitter cli to get rid of warning
+npm install -g tree-sitter-cli
+log_result $? "setup_arch.sh" "Installed tree-sitter-cli from npm" "Failed to install tree-sitter-cli from npm"
+
+# Fix audio by forcing legacy HDA driver mode
+cp alsa.conf /etc/modprobe.d/alsa.conf
+log_result $? "setup_arch.sh" "Copied alsa.conf file to /etc/modprobe.d/ to force legacy HDA driver mode" "Failed to copy alsa.conf file to /etc/modprobe.d/ to force legacy HDA driver mode"
+
 # Transfer ownership of user's home directory to them
 chown -R ${username}:users /home/${username}/
+log_result $? "setup_arch.sh" "Changed ownership of ${user}'s home directory and all files within it to them" "Failed to change ownership of ${user}'s home directory and all files within it to them"
 
 # Synchronise with dotfiles repository using chezmoi
 su - "${username}" <<EOF
@@ -206,15 +225,6 @@ su - "${username}" <<EOF
 	chezmoi update -v
 	log_result $? "setup_arch.sh" "Synched local dotfiles with chezmoi directory dotfiles" "Failed to synch local dotfiles with chezmoi directory dotfiles"
 EOF
-
-# Generate correct locales
-sed -i '/^#en_US.UTF-8 UTF-8/s/^#//' /etc/locale.gen
-
-# Disable xfce4 notifications
-sed -i 's/^Name=org.freedesktop.Notifications$/Name=org.freedesktop.NotificationsNone/' /usr/share/dbus-1/services/org.xfce.xfce4-notifyd.Notifications.service
-
-# Install treesitter cli to get rid of warning
-npm install -g tree-sitter-cli
 
 # Have packer setup its config and run updates
 # nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
