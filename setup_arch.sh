@@ -238,3 +238,5 @@ echo "\t5) Check log to see if any software failed to install, and attempt to in
 # Might not need to manually do step 6 as I addedthe instruction after copying the wallpapers directory
 echo "\t6) Point betterlockscreen to the wallpapers directory with betterlockscreen -u \"path/to/wallpaper/dir/\""
 echo "\t7) Set up github ssh keys"
+
+# TODO: When rewriting the whole script to have a separate install for laptop/desktop, for laptops use the usb power management (usbcore.conf) from the following link: https://gist.github.com/mohammedmatar/854e8c2d23d33d00ceea93e699c01c0b
