@@ -100,7 +100,7 @@ AUR_PKGS=(
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
-	'texlive-full'
+	'texlive'
 )
 
 GAMING_PACKAGES=(
