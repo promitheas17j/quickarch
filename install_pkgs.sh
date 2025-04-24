@@ -97,6 +97,7 @@ AUR_PKGS=(
 	'ttf-cascadia-code-nerd'
 	'sddm-theme-tokyo-night-git'
 	'nvim-packer-git'
+	'tree-sitter-cli'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
