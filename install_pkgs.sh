@@ -73,6 +73,7 @@ PACMAN_PKGS=(
 	'ntp'
 	'xdo'
 	'at'
+	'x11-ssh-askpass'
 )
 
 AUR_PKGS=(
