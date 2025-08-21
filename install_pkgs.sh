@@ -99,6 +99,9 @@ AUR_PKGS=(
 	'sddm-theme-tokyo-night-git'
 	'nvim-packer-git'
 	'tree-sitter-cli'
+	'criterion'
+	'docker'
+	'vlc-plugin-ffmpeg'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
