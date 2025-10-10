@@ -27,6 +27,7 @@ PACMAN_PKGS=(
 	'alsa-utils'
 	'pulseaudio'
 	'vlc'
+	'vlc-plugin-ffmpeg'
 	'rofi'
 	'lsof'
 	'qbittorrent'
@@ -101,7 +102,6 @@ AUR_PKGS=(
 	'tree-sitter-cli'
 	'criterion'
 	'docker'
-	'vlc-plugin-ffmpeg'
 )
 
 OPTIONAL_PACMAN_PACKAGES=(
