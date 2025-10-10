@@ -76,6 +76,7 @@ PACMAN_PKGS=(
 	'at'
 	'x11-ssh-askpass'
 	'amfora'
+	'criterion'
 )
 
 AUR_PKGS=(
