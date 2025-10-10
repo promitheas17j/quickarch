@@ -209,8 +209,11 @@ log_result $? "setup_arch.sh" "Copied alsa.conf file to /etc/modprobe.d/ to forc
 
 # Copy update checking service and timer to required directory and enable the timer
 cp checkupdates.service /etc/systemd/system/
+log_result $? "setup_arch.sh" "Copied checkupdates.service to /etc/systemd/system/" "Failed to copy checkupdates.service to /etc/systemd/system/"
 cp checkupdates.timer /etc/systemd/system/
+log_result $? "setup_arch.sh" "Copied checkupdates.timer to /etc/systemd/system/" "Failed to copy checkupdates.timer to /etc/systemd/system/"
 systemctl enable checkupdates.timer
+log_result $? "setup_arch.sh" "Enabled checkupdates.timer" "Failed to enable checkupdates.timer"
 
 # Transfer ownership of user's home directory to them
 chown -R ${username}:users /home/${username}/
