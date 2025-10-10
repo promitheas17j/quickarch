@@ -207,6 +207,11 @@ log_result $? "setup_arch.sh" "Installed tree-sitter-cli from npm" "Failed to in
 cp alsa.conf /etc/modprobe.d/alsa.conf
 log_result $? "setup_arch.sh" "Copied alsa.conf file to /etc/modprobe.d/ to force legacy HDA driver mode" "Failed to copy alsa.conf file to /etc/modprobe.d/ to force legacy HDA driver mode"
 
+# Copy update checking service and timer to required directory and enable the timer
+cp checkupdates.service /etc/systemd/system/
+cp checkupdates.timer /etc/systemd/system/
+systemctl enable checkupdates.timer
+
 # Transfer ownership of user's home directory to them
 chown -R ${username}:users /home/${username}/
 log_result $? "setup_arch.sh" "Changed ownership of ${user}'s home directory and all files within it to them" "Failed to change ownership of ${user}'s home directory and all files within it to them"

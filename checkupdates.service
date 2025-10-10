@@ -1,0 +1,6 @@
+[Unit]
+Description=Update the temporary pacman DB for checkupdates
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sudo /usr/bin/yay -Sy --noconfirm
