@@ -112,6 +112,7 @@ GAMING_PACKAGES=(
 	'steam'
 	'lutris'
 	'bottles'
+	'gamemode'
 )
 
 username="$1"
