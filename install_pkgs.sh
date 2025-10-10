@@ -85,7 +85,6 @@ AUR_PKGS=(
 	'sddm-theme-tokyo-night'
 	'unixbench'
 	'beeper-latest-bin'
-	'netflix'
 	'dracula-cursors-git'
 	'lf'
 	'nerd-fonts-meta'
