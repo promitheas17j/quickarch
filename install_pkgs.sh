@@ -48,7 +48,7 @@ PACMAN_PKGS=(
 	'feh'
 	'ripgrep'
 	'mlocate'
-	'neofetch'
+	'fastfetch'
 	'pacman-contrib'
 	'xdotool'
 	'xclip'
